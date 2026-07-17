@@ -187,21 +187,38 @@ body {
 
 .golden-50 {
   font-family: var(--font-display);
-  font-size: clamp(5rem, 15vw, 12rem);
+  font-size: clamp(8rem, 28vw, 22rem);
   font-weight: 900;
-  background: var(--gold-gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   line-height: 1;
-  text-shadow: none;
-  filter: drop-shadow(0 0 40px rgba(212,169,78,0.35));
-  animation: goldShimmer 3s ease-in-out infinite;
+  color: var(--navy);
+  -webkit-text-stroke: 4px var(--gold);
+  paint-order: stroke fill;
+  text-shadow:
+    0 0 20px rgba(44,82,130,0.6),
+    0 0 60px rgba(44,82,130,0.3),
+    0 0 10px rgba(212,169,78,0.5),
+    0 0 40px rgba(212,169,78,0.25);
+  animation: glow50 3s ease-in-out infinite;
+  position: relative;
 }
 
-@keyframes goldShimmer {
-  0%, 100% { filter: drop-shadow(0 0 40px rgba(212,169,78,0.35)); }
-  50% { filter: drop-shadow(0 0 60px rgba(212,169,78,0.6)); }
+@keyframes glow50 {
+  0%, 100% {
+    text-shadow:
+      0 0 20px rgba(44,82,130,0.6),
+      0 0 60px rgba(44,82,130,0.3),
+      0 0 10px rgba(212,169,78,0.5),
+      0 0 40px rgba(212,169,78,0.25);
+    -webkit-text-stroke: 4px var(--gold);
+  }
+  50% {
+    text-shadow:
+      0 0 40px rgba(44,82,130,0.8),
+      0 0 100px rgba(44,82,130,0.5),
+      0 0 20px rgba(212,169,78,0.7),
+      0 0 80px rgba(212,169,78,0.4);
+    -webkit-text-stroke: 4px var(--gold-light);
+  }
 }
 
 .hero-name {
@@ -731,7 +748,7 @@ body {
 
 @media (max-width: 480px) {
   .details-grid { grid-template-columns: 1fr; }
-  .golden-50 { font-size: clamp(4rem, 20vw, 8rem); }
+  .golden-50 { font-size: clamp(6rem, 22vw, 12rem); -webkit-text-stroke: 3px var(--gold); }
   .share-btn span { display: none; }
 }
 
