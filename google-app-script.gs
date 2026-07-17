@@ -171,7 +171,7 @@ function testDoPost() {
   const testData = {
     timestamp: new Date().toISOString(),
     fullName: "Test Guest",
-    phone: "+63 912 345 6789",
+    phone: "+260 971 234 567",
     email: "test@example.com",
     familyGroup: "Friends",
     attendance: "Yes",

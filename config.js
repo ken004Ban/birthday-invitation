@@ -31,7 +31,7 @@ const CONFIG = {
 
   // ── Google Apps Script Web App URL ─────────────────────────
   // Paste your deployed Google Apps Script web app URL here.
-  appsScriptUrl: "",
+  appsScriptUrl: "https://script.google.com/macros/s/AKfycbx7wCCENatyAeIlXkrrbroNlIRaMmPW8TeKImw9aXZnU-3mr1cR0dN8q-FvtiXKoTk2QA/exec",
 
   // ── QR Code target URL ────────────────────────────────────
   // Leave empty to auto-detect from current page location.
