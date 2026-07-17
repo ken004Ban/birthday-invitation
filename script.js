@@ -203,7 +203,7 @@
       text: url,
       width: 180,
       height: 180,
-      colorDark: "#1a1a1a",
+      colorDark: "#1a365d",
       colorLight: "#ffffff",
       correctLevel: QRCode.CorrectLevel.H,
     });
@@ -437,9 +437,9 @@
 
     const pieces = [];
     const colors = [
-      "#d4a94e", "#f0d68a", "#b8860b",
-      "#ffffff", "#d4a94e", "#ffd700",
-      "#1a1a1a", "#e6c35c",
+      "#1a365d", "#d4a94e", "#f0d68a",
+      "#ffffff", "#2c5282", "#ffd700",
+      "#f8f9fc", "#b8860b",
     ];
 
     for (let i = 0; i < 150; i++) {
@@ -490,7 +490,7 @@
 
     function spawn() {
       const b = document.createElement("div");
-      b.className = "balloon " + (Math.random() > 0.5 ? "gold" : "dark");
+      b.className = "balloon " + (Math.random() > 0.5 ? "gold" : "navy");
       b.style.left = Math.random() * 100 + "%";
       b.style.animationDuration = Math.random() * 6 + 8 + "s";
       b.style.animationDelay = Math.random() * 2 + "s";

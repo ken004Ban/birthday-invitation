@@ -12,22 +12,22 @@ const CONFIG = {
     celebrantName: "Patrick Bobo",
     title: "Golden Jubilee",
     subtitle: "50th Birthday Celebration",
-    date: "2025-08-04",               // ISO date (YYYY-MM-DD)
-    dateDisplay: "Tuesday, 4 August 2025",
-    time: "12:00 PM onwards",
-    venue: "Bobo Residence",
-    address: "Your Full Address Here",
-    dressCode: "Smart Casual / Gold Accents Welcome",
+    date: "2026-08-03",               // ISO date (YYYY-MM-DD)
+    dateDisplay: "Monday, 3 August 2026",
+    time: "13:30 hrs",
+    venue: "Avomix, Fatima Area",
+    address: "Avomix, Fatima Area",
+    dressCode: "Smart Casual with touch of Navy blue, gold and white",
     contactPerson: "Rabecca Bobo",
     contactPhone: "+260 977 113 739",
   },
 
   // ── Invitation Message ─────────────────────────────────────
   invitationMessage:
-    "You are warmly invited to celebrate Patrick Bobo's Golden Jubilee " +
-    "as he marks 50 wonderful years of God's faithfulness, love, and blessings.\n\n" +
-    "Your presence will make this celebration even more special.\n\n" +
-    "We look forward to celebrating with you and your family.",
+    "You are warmly invited to a Birthday Lunch celebrating " +
+    "Patrick Bobo's Golden Jubilee — 50 wonderful years of God's faithfulness, love, and blessings.\n\n" +
+    "Join us for an afternoon of joy, laughter, and cherished moments as we honour this remarkable milestone.\n\n" +
+    "Your presence will make this celebration even more special.",
 
   // ── Google Apps Script Web App URL ─────────────────────────
   // Paste your deployed Google Apps Script web app URL here.
@@ -62,5 +62,5 @@ const CONFIG = {
   ],
 
   // ── Max Guests ────────────────────────────────────────────
-  maxGuests: 10,
+  maxGuests: 2,
 };
