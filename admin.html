@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard – Patrick Bobo's 50th</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #d4a94e;
+      --gold-light: #f0d68a;
+      --gold-dark: #b8860b;
+      --black: #0a0a0a;
+      --black-light: #1a1a1a;
+      --card-bg: #141414;
+      --white: #ffffff;
+      --white-dim: #e0d8c8;
+      --text-muted: #a09880;
+    }
+    body { background: var(--black); color: var(--white); font-family: 'Montserrat', sans-serif; min-height: 100vh; }
+    .admin-header { background: linear-gradient(135deg, #1a1510, #0d0b08); border-bottom: 1px solid rgba(212,169,78,0.2); padding: 1.5rem 0; }
+    .admin-title { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.6rem; margin: 0; }
+    .admin-subtitle { color: var(--text-muted); font-size: 0.85rem; }
+    .stat-card { background: var(--card-bg); border: 1px solid rgba(212,169,78,0.15); border-radius: 12px; padding: 1.5rem; text-align: center; transition: transform 0.3s ease; }
+    .stat-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+    .stat-number { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #d4a94e, #f0d68a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 0.3rem; }
+    .panel { background: var(--card-bg); border: 1px solid rgba(212,169,78,0.15); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .panel-title { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.2rem; margin-bottom: 1rem; }
+    .form-control, .form-select, .form-control:focus, .form-select:focus {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(212,169,78,0.2); color: var(--white);
+    }
+    .form-control:focus, .form-select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,169,78,0.15); }
+    .form-label { color: var(--gold-light); font-size: 0.85rem; }
+    .btn-gold { background: linear-gradient(135deg, #d4a94e, #f0d68a, #b8860b); color: var(--black); font-family: 'Playfair Display', serif; font-weight: 700; border: none; border-radius: 8px; padding: 0.6rem 1.5rem; }
+    .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(212,169,78,0.4); color: var(--black); }
+    .rsvp-table { width: 100%; border-collapse: collapse; }
+    .rsvp-table th { background: rgba(212,169,78,0.1); color: var(--gold-light); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; padding: 0.75rem; border-bottom: 1px solid rgba(212,169,78,0.2); position: sticky; top: 0; }
+    .rsvp-table td { padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; color: var(--white-dim); }
+    .rsvp-table tr:hover td { background: rgba(212,169,78,0.04); }
+    .table-wrapper { max-height: 500px; overflow-y: auto; border-radius: 8px; border: 1px solid rgba(212,169,78,0.1); }
+    .badge-yes { background: rgba(40,167,69,0.2); color: #28a745; border: 1px solid rgba(40,167,69,0.3); }
+    .badge-no { background: rgba(220,53,69,0.2); color: #dc3545; border: 1px solid rgba(220,53,69,0.3); }
+    .badge-maybe { background: rgba(255,193,7,0.2); color: #ffc107; border: 1px solid rgba(255,193,7,0.3); }
+    .badge { padding: 0.3em 0.6em; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    .search-bar { background: rgba(255,255,255,0.05); border: 1px solid rgba(212,169,78,0.2); color: var(--white); border-radius: 8px; }
+    .search-bar:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(212,169,78,0.15); color: var(--white); }
+    .login-overlay { position: fixed; inset: 0; background: var(--black); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+    .login-box { background: var(--card-bg); border: 1px solid rgba(212,169,78,0.2); border-radius: 16px; padding: 2.5rem; width: 100%; max-width: 380px; text-align: center; }
+    .login-box h2 { font-family: 'Playfair Display', serif; color: var(--gold); margin-bottom: 1.5rem; }
+    .admin-nav { border-bottom: 1px solid rgba(212,169,78,0.15); padding: 0.75rem 0; margin-bottom: 1.5rem; }
+    .admin-nav .nav-link { color: var(--text-muted); font-size: 0.85rem; padding: 0.5rem 1rem; border-radius: 8px; transition: all 0.3s ease; }
+    .admin-nav .nav-link:hover, .admin-nav .nav-link.active { color: var(--gold); background: rgba(212,169,78,0.08); }
+    .action-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+    .toast-custom { background: var(--card-bg); border: 1px solid var(--gold); color: var(--white); }
+  </style>
+</head>
+<body>
+
+  <!-- Login Overlay -->
+  <div id="login-overlay" class="login-overlay">
+    <div class="login-box">
+      <i class="fas fa-lock" style="font-size:2rem;color:var(--gold);margin-bottom:1rem;"></i>
+      <h2>Admin Dashboard</h2>
+      <div class="mb-3">
+        <input type="password" id="admin-password" class="form-control text-center" placeholder="Enter password" autofocus />
+      </div>
+      <button id="login-btn" class="btn btn-gold w-100">
+        <i class="fas fa-sign-in-alt me-2"></i>Login
+      </button>
+      <p id="login-error" class="text-danger mt-2 mb-0" style="display:none;">Incorrect password</p>
+    </div>
+  </div>
+
+  <!-- Main Dashboard (hidden until login) -->
+  <div id="dashboard" style="display:none;">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="container d-flex align-items-center justify-content-between">
+        <div>
+          <h1 class="admin-title"><i class="fas fa-crown me-2"></i>Admin Dashboard</h1>
+          <p class="admin-subtitle mb-0">Patrick Bobo's Golden Jubilee</p>
+        </div>
+        <div>
+          <a href="index.html" class="btn btn-outline-light btn-sm me-2">
+            <i class="fas fa-eye me-1"></i>View Invitation
+          </a>
+          <button id="logout-btn" class="btn btn-outline-danger btn-sm">
+            <i class="fas fa-sign-out-alt me-1"></i>Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="container py-4">
+
+      <!-- Nav Tabs -->
+      <ul class="nav admin-nav" id="admin-tabs">
+        <li><a class="nav-link active" data-tab="overview"><i class="fas fa-chart-bar me-1"></i>Overview</a></li>
+        <li><a class="nav-link" data-tab="edit-event"><i class="fas fa-edit me-1"></i>Edit Event</a></li>
+        <li><a class="nav-link" data-tab="guests"><i class="fas fa-users me-1"></i>Guest List</a></li>
+        <li><a class="nav-link" data-tab="sheets"><i class="fab fa-google me-1"></i>Google Sheets</a></li>
+      </ul>
+
+      <!-- ═══════════ OVERVIEW TAB ═══════════ -->
+      <div id="tab-overview" class="tab-content">
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+              <div class="stat-number" id="stat-total">0</div>
+              <div class="stat-label">Total RSVPs</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+              <div class="stat-number" id="stat-yes">0</div>
+              <div class="stat-label">Attending</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+              <div class="stat-number" id="stat-no">0</div>
+              <div class="stat-label">Not Attending</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+              <div class="stat-number" id="stat-maybe">0</div>
+              <div class="stat-label">Maybe</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+              <div class="stat-number" id="stat-guests">0</div>
+              <div class="stat-label">Guests Expected</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <div class="stat-card">
+              <div class="stat-number" id="stat-invites">0</div>
+              <div class="stat-label">Invitations Sent</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3 class="panel-title"><i class="fas fa-clock me-2"></i>Recent RSVPs</h3>
+          <div id="recent-rsvps" class="text-muted" style="font-size:0.9rem;">No RSVPs yet.</div>
+        </div>
+      </div>
+
+      <!-- ═══════════ EDIT EVENT TAB ═══════════ -->
+      <div id="tab-edit-event" class="tab-content" style="display:none;">
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="panel">
+              <h3 class="panel-title">Event Details</h3>
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label">Celebrant Name</label>
+                  <input type="text" id="edit-celebrant" class="form-control" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Event Date</label>
+                  <input type="date" id="edit-date" class="form-control" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Date Display</label>
+                  <input type="text" id="edit-date-display" class="form-control" placeholder="Tuesday, 4 August 2025" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Time</label>
+                  <input type="text" id="edit-time" class="form-control" placeholder="12:00 PM onwards" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Dress Code</label>
+                  <input type="text" id="edit-dress" class="form-control" />
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Venue</label>
+                  <input type="text" id="edit-venue" class="form-control" />
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Address (for Google Maps)</label>
+                  <input type="text" id="edit-address" class="form-control" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Contact Person</label>
+                  <input type="text" id="edit-contact" class="form-control" />
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Phone Number</label>
+                  <input type="tel" id="edit-phone" class="form-control" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="panel">
+              <h3 class="panel-title">Invitation Message</h3>
+              <textarea id="edit-message" class="form-control" rows="8"></textarea>
+            </div>
+            <div class="panel">
+              <h3 class="panel-title">Google Apps Script URL</h3>
+              <input type="url" id="edit-apps-script" class="form-control mb-2" placeholder="https://script.google.com/macros/s/..." />
+              <small class="text-muted">Paste your deployed Google Apps Script Web App URL</small>
+            </div>
+            <div class="panel">
+              <h3 class="panel-title">QR Code URL</h3>
+              <input type="url" id="edit-qr-url" class="form-control mb-2" placeholder="Leave empty for current page URL" />
+            </div>
+            <button id="save-event-btn" class="btn btn-gold w-100">
+              <i class="fas fa-save me-2"></i>Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════ GUEST LIST TAB ═══════════ -->
+      <div id="tab-guests" class="tab-content" style="display:none;">
+        <div class="panel">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+            <h3 class="panel-title mb-0"><i class="fas fa-users me-2"></i>Guest List</h3>
+            <div class="action-bar mb-0">
+              <input type="text" id="guest-search" class="form-control search-bar" placeholder="Search guests..." style="width:220px;" />
+              <select id="guest-filter" class="form-select search-bar" style="width:160px;">
+                <option value="">All Groups</option>
+              </select>
+              <select id="guest-sort" class="form-select search-bar" style="width:150px;">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="name">By Name</option>
+                <option value="attendance">By Attendance</option>
+              </select>
+            </div>
+          </div>
+          <div class="action-bar">
+            <button class="btn btn-gold btn-sm" id="export-csv"><i class="fas fa-file-csv me-1"></i>CSV</button>
+            <button class="btn btn-gold btn-sm" id="export-excel"><i class="fas fa-file-excel me-1"></i>Excel</button>
+            <button class="btn btn-gold btn-sm" id="print-list"><i class="fas fa-print me-1"></i>Print</button>
+          </div>
+          <div class="table-wrapper" id="table-wrapper">
+            <table class="rsvp-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Group</th>
+                  <th>Attending</th>
+                  <th>Guests</th>
+                  <th>Message</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="guests-tbody"></tbody>
+            </table>
+          </div>
+          <div id="no-guests" class="text-center text-muted py-4" style="display:none;">No RSVPs found.</div>
+        </div>
+      </div>
+
+      <!-- ═══════════ GOOGLE SHEETS TAB ═══════════ -->
+      <div id="tab-sheets" class="tab-content" style="display:none;">
+        <div class="panel">
+          <h3 class="panel-title"><i class="fab fa-google me-2"></i>Google Sheets Integration</h3>
+          <p class="text-muted mb-3" style="font-size:0.9rem;">
+            Connect your RSVP form to Google Sheets using the Apps Script below.
+            Every submission will be saved automatically.
+          </p>
+          <div class="panel" style="background:rgba(0,0,0,0.3);border:none;">
+            <h5 style="color:var(--gold-light);font-size:0.9rem;">Setup Steps:</h5>
+            <ol class="text-muted" style="font-size:0.85rem;line-height:2;">
+              <li>Create a new Google Sheet</li>
+              <li>Go to <strong style="color:var(--gold-light);">Extensions → Apps Script</strong></li>
+              <li>Paste the code from <code>google-app-script.gs</code></li>
+              <li>Deploy as Web App (Who has access: Anyone)</li>
+              <li>Copy the Web App URL and paste it in the <strong style="color:var(--gold-light);">Edit Event</strong> tab</li>
+            </ol>
+          </div>
+          <div class="panel" style="background:rgba(0,0,0,0.3);border:none;">
+            <h5 style="color:var(--gold-light);font-size:0.9rem;">Current Apps Script URL:</h5>
+            <div id="current-apps-script-url" class="text-muted" style="font-size:0.85rem;word-break:break-all;">
+              Not configured. Set it in Edit Event tab.
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3 class="panel-title">Load Data from Google Sheets</h3>
+          <p class="text-muted mb-3" style="font-size:0.85rem;">
+            Fetch the latest data from your Google Sheet using the Apps Script GET endpoint.
+          </p>
+          <button id="fetch-sheets-btn" class="btn btn-gold">
+            <i class="fas fa-sync-alt me-2"></i>Fetch from Google Sheets
+          </button>
+          <div id="sheets-status" class="mt-2 text-muted" style="font-size:0.85rem;"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Print-only guest list -->
+  <div id="print-area" style="display:none;"></div>
+
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

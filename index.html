@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Patrick Bobo's 50th Birthday Celebration</title>
+  <meta name="description" content="You are warmly invited to celebrate Patrick Bobo's Golden Jubilee - 50th Birthday Celebration" />
+  <meta property="og:title" content="Patrick Bobo's 50th Birthday Celebration" />
+  <meta property="og:description" content="Join us in celebrating 50 wonderful years of God's faithfulness." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#1a1a1a" />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- QRCode.js -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════════ CONFETTI CANVAS ═══════════════════════ -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- ═══════════════════════ SPARKLE LAYER ═══════════════════════ -->
+  <div id="sparkle-layer"></div>
+
+  <!-- ═══════════════════════ FLOATING BALLOONS ═══════════════════════ -->
+  <div id="balloon-container" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════ MUSIC TOGGLE ═══════════════════════ -->
+  <button id="music-btn" class="music-toggle" title="Toggle Music" aria-label="Toggle Music">
+    <i class="fas fa-music"></i>
+  </button>
+  <audio id="bg-music" loop preload="auto"></audio>
+
+  <!-- ═══════════════════════ HERO SECTION ═══════════════════════ -->
+  <section id="hero" class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container position-relative text-center">
+      <div class="hero-content fade-in">
+        <p class="hero-subtitle">You Are Cordially Invited</p>
+        <div class="golden-50">50</div>
+        <h1 class="hero-name">Patrick Bobo</h1>
+        <h2 class="hero-title">Golden Jubilee</h2>
+        <div class="hero-divider"><span></span><i class="fas fa-crown"></i><span></span></div>
+        <p class="hero-subtitle-2">50th Birthday Celebration</p>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ COUNTDOWN ═══════════════════════ -->
+  <section id="countdown" class="section-dark py-5">
+    <div class="container text-center">
+      <h2 class="section-heading">Counting Down To The Celebration</h2>
+      <div class="countdown-wrapper mt-4">
+        <div class="countdown-item">
+          <span id="cd-days" class="countdown-number">00</span>
+          <span class="countdown-label">Days</span>
+        </div>
+        <div class="countdown-item">
+          <span id="cd-hours" class="countdown-number">00</span>
+          <span class="countdown-label">Hours</span>
+        </div>
+        <div class="countdown-item">
+          <span id="cd-minutes" class="countdown-number">00</span>
+          <span class="countdown-label">Minutes</span>
+        </div>
+        <div class="countdown-item">
+          <span id="cd-seconds" class="countdown-number">00</span>
+          <span class="countdown-label">Seconds</span>
+        </div>
+      </div>
+      <p class="countdown-target mt-3">until <strong id="countdown-date-display"></strong></p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ INVITATION MESSAGE ═══════════════════════ -->
+  <section id="invitation" class="section-gold py-5">
+    <div class="container text-center">
+      <div class="ornament-top">&#10053;</div>
+      <h2 class="section-heading light">A Message From Our Hearts</h2>
+      <div class="invitation-card mx-auto">
+        <p id="invitation-text" class="invitation-message"></p>
+      </div>
+      <div class="ornament-bottom">&#10053;</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ EVENT DETAILS ═══════════════════════ -->
+  <section id="details" class="section-dark py-5">
+    <div class="container text-center">
+      <h2 class="section-heading">Event Details</h2>
+      <div class="details-grid mt-4">
+        <div class="detail-card fade-in">
+          <i class="fas fa-calendar-alt detail-icon"></i>
+          <h5>Date</h5>
+          <p id="detail-date"></p>
+        </div>
+        <div class="detail-card fade-in">
+          <i class="fas fa-clock detail-icon"></i>
+          <h5>Time</h5>
+          <p id="detail-time"></p>
+        </div>
+        <div class="detail-card fade-in">
+          <i class="fas fa-map-marker-alt detail-icon"></i>
+          <h5>Venue</h5>
+          <p id="detail-venue"></p>
+        </div>
+        <div class="detail-card fade-in">
+          <i class="fas fa-tshirt detail-icon"></i>
+          <h5>Dress Code</h5>
+          <p id="detail-dress"></p>
+        </div>
+        <div class="detail-card fade-in">
+          <i class="fas fa-user detail-icon"></i>
+          <h5>Contact Person</h5>
+          <p id="detail-contact"></p>
+        </div>
+        <div class="detail-card fade-in">
+          <i class="fas fa-phone detail-icon"></i>
+          <h5>Phone</h5>
+          <p id="detail-phone"></p>
+        </div>
+      </div>
+      <!-- Google Maps -->
+      <div id="map-container" class="mt-4" style="display:none;">
+        <a id="map-link" href="#" target="_blank" class="btn btn-gold">
+          <i class="fas fa-directions me-2"></i>Open in Google Maps
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ GALLERY ═══════════════════════ -->
+  <section id="gallery" class="section-gold py-5">
+    <div class="container text-center">
+      <h2 class="section-heading light">Celebrating Through The Years</h2>
+      <div id="gallery-slider" class="gallery-slider mt-4">
+        <div class="gallery-track" id="gallery-track"></div>
+        <button class="gallery-nav gallery-prev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+        <button class="gallery-nav gallery-next" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div class="gallery-dots mt-3" id="gallery-dots"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ RSVP FORM ═══════════════════════ -->
+  <section id="rsvp" class="section-dark py-5">
+    <div class="container text-center">
+      <h2 class="section-heading">RSVP</h2>
+      <p class="section-sub">Kindly respond by filling out the form below</p>
+
+      <form id="rsvp-form" class="rsvp-form mx-auto mt-4 text-start" novalidate>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label for="rsvp-name" class="form-label">Full Name <span class="text-danger">*</span></label>
+            <input type="text" id="rsvp-name" class="form-control" required placeholder="Juan Dela Cruz" />
+          </div>
+          <div class="col-md-6">
+            <label for="rsvp-phone" class="form-label">Mobile Number <span class="text-danger">*</span></label>
+            <input type="tel" id="rsvp-phone" class="form-control" required placeholder="+63 9XX XXX XXXX" />
+          </div>
+          <div class="col-md-6">
+            <label for="rsvp-email" class="form-label">Email Address <small class="text-muted">(optional)</small></label>
+            <input type="email" id="rsvp-email" class="form-control" placeholder="you@example.com" />
+          </div>
+          <div class="col-md-6">
+            <label for="rsvp-family" class="form-label">Family Group <span class="text-danger">*</span></label>
+            <select id="rsvp-family" class="form-select" required>
+              <option value="" disabled selected>Select group...</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Will you attend? <span class="text-danger">*</span></label>
+            <div class="form-check-group">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="attendance" id="att-yes" value="Yes" required />
+                <label class="form-check-label" for="att-yes"><i class="fas fa-check-circle text-success me-1"></i> Yes</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="attendance" id="att-no" value="No" />
+                <label class="form-check-label" for="att-no"><i class="fas fa-times-circle text-danger me-1"></i> No</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="attendance" id="att-maybe" value="Maybe" />
+                <label class="form-check-label" for="att-maybe"><i class="fas fa-question-circle text-warning me-1"></i> Maybe</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="rsvp-guests" class="form-label">Number of Guests</label>
+            <select id="rsvp-guests" class="form-select"></select>
+          </div>
+          <div class="col-md-6">
+            <label for="rsvp-dietary" class="form-label">Dietary Requirements <small class="text-muted">(optional)</small></label>
+            <input type="text" id="rsvp-dietary" class="form-control" placeholder="e.g. Vegetarian, Allergy..." />
+          </div>
+          <div class="col-12">
+            <label for="rsvp-message" class="form-label">Special Message <small class="text-muted">(optional)</small></label>
+            <textarea id="rsvp-message" class="form-control" rows="3" placeholder="Write a birthday message..."></textarea>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <button type="submit" id="rsvp-submit" class="btn btn-gold btn-lg">
+            <span class="btn-text">Send RSVP</span>
+            <span class="btn-spinner d-none"><i class="fas fa-spinner fa-spin"></i> Sending...</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Success Message -->
+      <div id="rsvp-success" class="rsvp-success d-none">
+        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+        <h3>Thank You!</h3>
+        <p>Your RSVP has been received.</p>
+        <p>We look forward to celebrating with you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ QR CODE ═══════════════════════ -->
+  <section id="qr-section" class="section-gold py-5">
+    <div class="container text-center">
+      <h2 class="section-heading light">Share This Invitation</h2>
+      <p class="text-white mb-3">Scan the QR code to RSVP</p>
+      <div id="qr-code" class="qr-wrapper mx-auto"></div>
+      <p class="qr-label mt-3">Scan to RSVP</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ SHARE BUTTONS ═══════════════════════ -->
+  <section id="share" class="section-dark py-5">
+    <div class="container text-center">
+      <h2 class="section-heading">Spread The Word</h2>
+      <div class="share-buttons mt-4">
+        <button class="share-btn whatsapp" id="share-whatsapp" title="Share via WhatsApp">
+          <i class="fab fa-whatsapp"></i> WhatsApp
+        </button>
+        <button class="share-btn facebook" id="share-facebook" title="Share on Facebook">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </button>
+        <button class="share-btn email" id="share-email" title="Share via Email">
+          <i class="fas fa-envelope"></i> Email
+        </button>
+        <button class="share-btn calendar" id="share-calendar" title="Add to Google Calendar">
+          <i class="fab fa-google"></i> Google Calendar
+        </button>
+        <button class="share-btn copy" id="share-copy" title="Copy Invitation Link">
+          <i class="fas fa-link"></i> Copy Link
+        </button>
+      </div>
+      <div id="copy-toast" class="copy-toast">Link copied!</div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+  <footer class="footer-section py-4 text-center">
+    <div class="container">
+      <p class="footer-text">With love from the Bobo Family</p>
+      <p class="footer-sub">&copy; <span id="footer-year"></span> Patrick Bobo's Golden Jubilee</p>
+      <a href="admin.html" class="footer-admin-link" title="Admin Dashboard">
+        <i class="fas fa-cog"></i>
+      </a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
