@@ -24,11 +24,10 @@ const CONFIG = {
 
   // ── Invitation Message ─────────────────────────────────────
   invitationMessage:
-    "Good morning,\n\n" +
-    "Hope you are well with family.\n\n" +
-    "We are inviting you (Mr & Mrs) for a birthday lunch for Hubby (Patrick) — " +
-    "celebrating 50 wonderful years of God's faithfulness, love, and blessings.\n\n" +
-    "Your presence will make this celebration even more special.",
+    "You are warmly invited to celebrate Patrick Bobo's Golden Jubilee " +
+    "as he marks 50 wonderful years of God's faithfulness, love, and blessings.\n\n" +
+    "Your presence will make this celebration even more special.\n\n" +
+    "We look forward to celebrating with you and your family.",
 
   // ── Google Apps Script Web App URL ─────────────────────────
   // Paste your deployed Google Apps Script web app URL here.
