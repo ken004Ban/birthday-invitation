@@ -38,7 +38,7 @@ const CONFIG = {
   qrCodeUrl: "",
 
   // ── Background Music ──────────────────────────────────────
-  musicUrl: "assets/music/celebration.mp3",
+  musicUrl: "assets/music/Tare.mp3",
   musicEnabled: false,
 
   // ── Photos (add paths relative to assets/images/) ─────────

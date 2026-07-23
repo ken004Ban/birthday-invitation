@@ -377,6 +377,7 @@
 
     btn.addEventListener("click", () => {
       if (audio.paused) {
+        audio.currentTime = 25;
         audio.play().then(() => {
           btn.classList.add("playing");
         }).catch(() => {});
