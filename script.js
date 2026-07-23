@@ -373,8 +373,44 @@
     if (!audio || !btn) return;
 
     audio.src = CFG.musicUrl || "";
-    audio.currentTime = 25;
     audio.volume = 0;
+
+    let musicReady = false;
+
+    function tryAutoPlay() {
+      audio.play().then(() => {
+        btn.classList.remove("prompt");
+        btn.classList.add("playing");
+        fadeIn(0.3, 3000);
+      }).catch(() => {
+        btn.classList.add("prompt");
+      });
+    }
+
+    function onInteraction() {
+      if (audio.paused) {
+        audio.currentTime = 25;
+        audio.play().then(() => {
+          btn.classList.remove("prompt");
+          btn.classList.add("playing");
+          fadeIn(0.3, 1500);
+        }).catch(() => {});
+      }
+    }
+
+    document.addEventListener("click", onInteraction);
+    document.addEventListener("touchstart", onInteraction);
+
+    audio.addEventListener("play", () => {
+      if (!audio.classList.contains("manual-toggle")) {
+        btn.classList.remove("prompt");
+        btn.classList.add("playing");
+      }
+    });
+
+    audio.addEventListener("pause", () => {
+      btn.classList.remove("playing");
+    });
 
     function fadeIn(targetVol, duration) {
       const steps = 30;
@@ -411,27 +447,33 @@
       }, stepTime);
     }
 
-    audio.play().then(() => {
-      btn.classList.add("playing");
-      fadeIn(0.3, 3000);
-    }).catch(() => {
-      const resumeOnInteract = () => {
+    function startAt25() {
+      if (musicReady) {
         audio.currentTime = 25;
-        audio.play().then(() => {
-          btn.classList.add("playing");
-          fadeIn(0.3, 3000);
-        }).catch(() => {});
-        document.removeEventListener("click", resumeOnInteract);
-        document.removeEventListener("touchstart", resumeOnInteract);
-      };
-      document.addEventListener("click", resumeOnInteract);
-      document.addEventListener("touchstart", resumeOnInteract);
+      }
+      tryAutoPlay();
+    }
+
+    audio.addEventListener("loadedmetadata", () => {
+      musicReady = true;
+      audio.currentTime = 25;
+      audio.volume = 0;
+      startAt25();
     });
 
-    btn.addEventListener("click", () => {
+    if (audio.readyState >= 1) {
+      musicReady = true;
+      audio.currentTime = 25;
+      audio.volume = 0;
+      startAt25();
+    }
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
       if (audio.paused) {
         audio.currentTime = 25;
         audio.play().then(() => {
+          btn.classList.remove("prompt");
           btn.classList.add("playing");
           fadeIn(0.3, 1500);
         }).catch(() => {});
