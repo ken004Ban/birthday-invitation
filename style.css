@@ -148,6 +148,24 @@ body {
 .music-toggle.playing {
   animation: musicPulse 1s ease-in-out infinite;
 }
+.music-toggle.loading {
+  border: 3px solid transparent;
+  border-top-color: var(--gold);
+  border-right-color: var(--gold);
+  animation: musicSpin 1s linear infinite;
+  pointer-events: none;
+}
+.music-toggle.loading i {
+  animation: musicIconPulse 1.2s ease-in-out infinite;
+}
+@keyframes musicSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes musicIconPulse {
+  0%, 100% { opacity: 0.5; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
 .music-toggle.prompt {
   animation: musicPrompt 1.5s ease-in-out infinite;
   border-color: var(--gold);

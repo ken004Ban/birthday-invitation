@@ -374,6 +374,7 @@
 
     audio.src = CFG.musicUrl || "";
     audio.volume = 0;
+    btn.classList.add("loading");
 
     let musicReady = false;
 
@@ -456,6 +457,7 @@
 
     audio.addEventListener("loadedmetadata", () => {
       musicReady = true;
+      btn.classList.remove("loading");
       audio.currentTime = 25;
       audio.volume = 0;
       startAt25();
@@ -463,10 +465,18 @@
 
     if (audio.readyState >= 1) {
       musicReady = true;
+      btn.classList.remove("loading");
       audio.currentTime = 25;
       audio.volume = 0;
       startAt25();
     }
+
+    setTimeout(() => {
+      if (btn.classList.contains("loading")) {
+        btn.classList.remove("loading");
+        btn.classList.add("prompt");
+      }
+    }, 15000);
 
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
