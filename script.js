@@ -373,19 +373,88 @@
     if (!audio || !btn) return;
 
     audio.src = CFG.musicUrl || "";
-    audio.volume = 0.3;
+    audio.currentTime = 25;
+    audio.volume = 0;
+
+    function fadeIn(targetVol, duration) {
+      const steps = 30;
+      const stepTime = duration / steps;
+      const volStep = targetVol / steps;
+      let current = 0;
+      const interval = setInterval(() => {
+        current += volStep;
+        if (current >= targetVol) {
+          audio.volume = targetVol;
+          clearInterval(interval);
+        } else {
+          audio.volume = current;
+        }
+      }, stepTime);
+    }
+
+    function fadeOut(callback) {
+      const startVol = audio.volume;
+      const steps = 30;
+      const stepTime = 50;
+      const volStep = startVol / steps;
+      let current = startVol;
+      const interval = setInterval(() => {
+        current -= volStep;
+        if (current <= 0) {
+          audio.volume = 0;
+          audio.pause();
+          clearInterval(interval);
+          if (callback) callback();
+        } else {
+          audio.volume = current;
+        }
+      }, stepTime);
+    }
+
+    audio.play().then(() => {
+      btn.classList.add("playing");
+      fadeIn(0.3, 3000);
+    }).catch(() => {
+      const resumeOnInteract = () => {
+        audio.currentTime = 25;
+        audio.play().then(() => {
+          btn.classList.add("playing");
+          fadeIn(0.3, 3000);
+        }).catch(() => {});
+        document.removeEventListener("click", resumeOnInteract);
+        document.removeEventListener("touchstart", resumeOnInteract);
+      };
+      document.addEventListener("click", resumeOnInteract);
+      document.addEventListener("touchstart", resumeOnInteract);
+    });
 
     btn.addEventListener("click", () => {
       if (audio.paused) {
         audio.currentTime = 25;
         audio.play().then(() => {
           btn.classList.add("playing");
+          fadeIn(0.3, 1500);
         }).catch(() => {});
       } else {
-        audio.pause();
-        btn.classList.remove("playing");
+        fadeOut(() => {
+          btn.classList.remove("playing");
+        });
       }
     });
+
+    window.addEventListener("beforeunload", () => {
+      fadeOut();
+    });
+
+    const rsvpSuccess = $("#rsvp-success");
+    if (rsvpSuccess) {
+      const rsvpObserver = new MutationObserver(() => {
+        if (!rsvpSuccess.classList.contains("d-none")) {
+          fadeOut();
+        }
+      });
+      rsvpObserver.observe(rsvpSuccess, { attributes: true, attributeFilter: ["class"] });
+    }
   }
 
   /* ── Scroll Animations ────────────────────────────────── */
