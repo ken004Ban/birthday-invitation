@@ -457,13 +457,16 @@
 
     audio.addEventListener("loadedmetadata", () => {
       musicReady = true;
-      btn.classList.remove("loading");
       audio.currentTime = 25;
       audio.volume = 0;
+    });
+
+    audio.addEventListener("canplay", () => {
+      btn.classList.remove("loading");
       startAt25();
     });
 
-    if (audio.readyState >= 1) {
+    if (audio.readyState >= 3) {
       musicReady = true;
       btn.classList.remove("loading");
       audio.currentTime = 25;
@@ -611,6 +614,7 @@
     if (!container) return;
 
     function spawn() {
+      if (container.children.length >= 6) return;
       const b = document.createElement("div");
       b.className = "balloon " + (Math.random() > 0.5 ? "gold" : "navy");
       b.style.left = Math.random() * 100 + "%";
@@ -623,9 +627,9 @@
     }
 
     // Initial batch
-    for (let i = 0; i < 5; i++) setTimeout(spawn, i * 600);
+    for (let i = 0; i < 3; i++) setTimeout(spawn, i * 1200);
     // Continuously spawn
-    setInterval(spawn, 3000);
+    setInterval(spawn, 5000);
   }
 
   /* ── Sparkles ─────────────────────────────────────────── */
@@ -634,6 +638,7 @@
     if (!layer) return;
 
     function sparkle() {
+      if (layer.children.length >= 8) return;
       const s = document.createElement("div");
       s.className = "sparkle";
       s.style.left = Math.random() * 100 + "%";
@@ -644,8 +649,8 @@
       setTimeout(() => s.remove(), 5000);
     }
 
-    for (let i = 0; i < 12; i++) setTimeout(sparkle, i * 300);
-    setInterval(sparkle, 800);
+    for (let i = 0; i < 6; i++) setTimeout(sparkle, i * 500);
+    setInterval(sparkle, 1500);
   }
 
   /* ── Resize handler ───────────────────────────────────── */

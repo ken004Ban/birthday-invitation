@@ -75,6 +75,7 @@ body {
   border-radius: 50%;
   animation: sparkleFloat 3s ease-in-out infinite;
   box-shadow: 0 0 6px var(--gold), 0 0 12px var(--gold-light);
+  will-change: transform, opacity;
 }
 
 @keyframes sparkleFloat {
@@ -100,6 +101,7 @@ body {
   border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
   animation: balloonRise linear infinite;
   opacity: 0.6;
+  will-change: transform;
 }
 
 .balloon::after {
