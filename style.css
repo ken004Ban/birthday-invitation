@@ -125,63 +125,6 @@ body {
   100% { bottom: 110vh; opacity: 0; }
 }
 
-/* ── Music Toggle ───────────────────────────────────────── */
-.music-toggle {
-  position: fixed;
-  top: 20px; right: 20px;
-  z-index: 10000;
-  width: 48px; height: 48px;
-  border: 2px solid var(--navy-light);
-  border-radius: 50%;
-  background: rgba(255,255,255,0.9);
-  color: var(--navy);
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
-  box-shadow: var(--shadow-sm);
-}
-.music-toggle:hover {
-  background: var(--navy);
-  color: var(--white);
-  transform: scale(1.1);
-  border-color: var(--navy);
-}
-.music-toggle.playing {
-  animation: musicPulse 1s ease-in-out infinite;
-}
-.music-toggle.loading {
-  border: 3px solid transparent;
-  border-top-color: var(--gold);
-  border-right-color: var(--gold);
-  animation: musicSpin 1s linear infinite;
-  pointer-events: none;
-}
-.music-toggle.loading i {
-  animation: musicIconPulse 1.2s ease-in-out infinite;
-}
-@keyframes musicSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-@keyframes musicIconPulse {
-  0%, 100% { opacity: 0.5; transform: scale(0.85); }
-  50% { opacity: 1; transform: scale(1.05); }
-}
-.music-toggle.prompt {
-  animation: musicPrompt 1.5s ease-in-out infinite;
-  border-color: var(--gold);
-  background: rgba(212,169,78,0.15);
-}
-@keyframes musicPrompt {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(212,169,78,0.5); transform: scale(1); }
-  50% { box-shadow: 0 0 0 12px rgba(212,169,78,0); transform: scale(1.1); }
-}
-@keyframes musicPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(26,54,93,0.3); }
-  50% { box-shadow: 0 0 0 10px rgba(26,54,93,0); }
-}
-
 /* ── Hero Section ───────────────────────────────────────── */
 .hero-section {
   position: relative;

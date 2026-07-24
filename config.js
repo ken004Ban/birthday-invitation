@@ -37,10 +37,6 @@ const CONFIG = {
   // Leave empty to auto-detect from current page location.
   qrCodeUrl: "",
 
-  // ── Background Music ──────────────────────────────────────
-  musicUrl: "assets/music/Tare.mp3",
-  musicEnabled: false,
-
   // ── Photos (add paths relative to assets/images/) ─────────
   photos: [
     "assets/images/photo1.jpg",

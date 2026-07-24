@@ -31,7 +31,6 @@
     initQRCode();
     initShareButtons();
     initForm();
-    initMusic();
     initScrollAnimations();
     initConfetti();
     initBalloons();
@@ -335,15 +334,31 @@
         form.classList.add("d-none");
         const success = $("#rsvp-success");
         success.classList.remove("d-none");
-
-        // Confetti burst
         launchConfetti();
+
+        setTimeout(() => {
+          success.classList.add("d-none");
+          form.reset();
+          submitBtn.disabled = false;
+          btnText.classList.remove("d-none");
+          btnSpinner.classList.add("d-none");
+          form.classList.remove("d-none");
+        }, 3000);
       } catch (err) {
-        // Still save locally on error
         saveLocalRSVP(payload);
         form.classList.add("d-none");
-        $("#rsvp-success").classList.remove("d-none");
+        const success = $("#rsvp-success");
+        success.classList.remove("d-none");
         launchConfetti();
+
+        setTimeout(() => {
+          success.classList.add("d-none");
+          form.reset();
+          submitBtn.disabled = false;
+          btnText.classList.remove("d-none");
+          btnSpinner.classList.add("d-none");
+          form.classList.remove("d-none");
+        }, 3000);
       }
     });
   }
@@ -364,152 +379,6 @@
     if (/Mac/.test(ua)) return "Mac";
     if (/Linux/.test(ua)) return "Linux";
     return "Unknown";
-  }
-
-  /* ── Music ────────────────────────────────────────────── */
-  function initMusic() {
-    const audio = $("#bg-music");
-    const btn = $("#music-btn");
-    if (!audio || !btn) return;
-
-    audio.src = CFG.musicUrl || "";
-    audio.volume = 0;
-    btn.classList.add("loading");
-
-    let musicReady = false;
-
-    function tryAutoPlay() {
-      audio.play().then(() => {
-        btn.classList.remove("prompt");
-        btn.classList.add("playing");
-        fadeIn(0.3, 3000);
-      }).catch(() => {
-        btn.classList.add("prompt");
-      });
-    }
-
-    function onInteraction() {
-      if (audio.paused) {
-        audio.currentTime = 25;
-        audio.play().then(() => {
-          btn.classList.remove("prompt");
-          btn.classList.add("playing");
-          fadeIn(0.3, 1500);
-        }).catch(() => {});
-      }
-    }
-
-    document.addEventListener("click", onInteraction);
-    document.addEventListener("touchstart", onInteraction);
-
-    audio.addEventListener("play", () => {
-      if (!audio.classList.contains("manual-toggle")) {
-        btn.classList.remove("prompt");
-        btn.classList.add("playing");
-      }
-    });
-
-    audio.addEventListener("pause", () => {
-      btn.classList.remove("playing");
-    });
-
-    function fadeIn(targetVol, duration) {
-      const steps = 30;
-      const stepTime = duration / steps;
-      const volStep = targetVol / steps;
-      let current = 0;
-      const interval = setInterval(() => {
-        current += volStep;
-        if (current >= targetVol) {
-          audio.volume = targetVol;
-          clearInterval(interval);
-        } else {
-          audio.volume = current;
-        }
-      }, stepTime);
-    }
-
-    function fadeOut(callback) {
-      const startVol = audio.volume;
-      const steps = 30;
-      const stepTime = 50;
-      const volStep = startVol / steps;
-      let current = startVol;
-      const interval = setInterval(() => {
-        current -= volStep;
-        if (current <= 0) {
-          audio.volume = 0;
-          audio.pause();
-          clearInterval(interval);
-          if (callback) callback();
-        } else {
-          audio.volume = current;
-        }
-      }, stepTime);
-    }
-
-    function startAt25() {
-      if (musicReady) {
-        audio.currentTime = 25;
-      }
-      tryAutoPlay();
-    }
-
-    audio.addEventListener("loadedmetadata", () => {
-      musicReady = true;
-      audio.currentTime = 25;
-      audio.volume = 0;
-    });
-
-    audio.addEventListener("canplay", () => {
-      btn.classList.remove("loading");
-      startAt25();
-    });
-
-    if (audio.readyState >= 3) {
-      musicReady = true;
-      btn.classList.remove("loading");
-      audio.currentTime = 25;
-      audio.volume = 0;
-      startAt25();
-    }
-
-    setTimeout(() => {
-      if (btn.classList.contains("loading")) {
-        btn.classList.remove("loading");
-        btn.classList.add("prompt");
-      }
-    }, 15000);
-
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (audio.paused) {
-        audio.currentTime = 25;
-        audio.play().then(() => {
-          btn.classList.remove("prompt");
-          btn.classList.add("playing");
-          fadeIn(0.3, 1500);
-        }).catch(() => {});
-      } else {
-        fadeOut(() => {
-          btn.classList.remove("playing");
-        });
-      }
-    });
-
-    window.addEventListener("beforeunload", () => {
-      fadeOut();
-    });
-
-    const rsvpSuccess = $("#rsvp-success");
-    if (rsvpSuccess) {
-      const rsvpObserver = new MutationObserver(() => {
-        if (!rsvpSuccess.classList.contains("d-none")) {
-          fadeOut();
-        }
-      });
-      rsvpObserver.observe(rsvpSuccess, { attributes: true, attributeFilter: ["class"] });
-    }
   }
 
   /* ── Scroll Animations ────────────────────────────────── */

@@ -28,13 +28,24 @@
 
   function doLogin() {
     const pw = passwordInput.value.trim();
-    if (pw === CONFIG.adminPassword) {
-      sessionStorage.setItem("bobobirthday_admin", "true");
-      showDashboard();
-    } else {
+    try {
+      if (typeof CONFIG === "undefined" || !CONFIG.adminPassword) {
+        loginError.textContent = "Configuration not loaded. Please refresh.";
+        loginError.style.display = "block";
+        return;
+      }
+      if (pw === CONFIG.adminPassword) {
+        sessionStorage.setItem("bobobirthday_admin", "true");
+        showDashboard();
+      } else {
+        loginError.textContent = "Incorrect password";
+        loginError.style.display = "block";
+        passwordInput.value = "";
+        passwordInput.focus();
+      }
+    } catch (err) {
+      loginError.textContent = "Error: " + err.message;
       loginError.style.display = "block";
-      passwordInput.value = "";
-      passwordInput.focus();
     }
   }
 
@@ -437,6 +448,15 @@
 
   /* ── Init ─────────────────────────────────────────────── */
   function init() {
+    try {
+      if (typeof CONFIG === "undefined") {
+        console.error("CONFIG is not loaded. Check that config.js is accessible.");
+        return;
+      }
+    } catch (e) {
+      console.error("Init error:", e);
+      return;
+    }
     initTabs();
     loadEditForm();
     initSaveEvent();
