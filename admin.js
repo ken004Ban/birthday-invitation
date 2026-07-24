@@ -461,5 +461,6 @@
     loadEditForm();
     initSaveEvent();
     renderOverview();
+    fetchFromSheets();
   }
 })();
