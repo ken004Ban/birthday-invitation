@@ -37,13 +37,6 @@ const CONFIG = {
   // Leave empty to auto-detect from current page location.
   qrCodeUrl: "",
 
-  // ── Photos (add paths relative to assets/images/) ─────────
-  photos: [
-    "assets/images/photo1.jpg",
-    "assets/images/photo2.jpg",
-    "assets/images/photo3.jpg",
-  ],
-
   // ── Admin Password ────────────────────────────────────────
   adminPassword: "patrick50",
 

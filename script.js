@@ -27,7 +27,6 @@
     buildGuestDropdown();
     initCountdown();
     initInvitationText();
-    initGallery();
     initQRCode();
     initShareButtons();
     initForm();
@@ -122,72 +121,6 @@
     setText("#cd-hours", String(h).padStart(2, "0"));
     setText("#cd-minutes", String(m).padStart(2, "0"));
     setText("#cd-seconds", String(s).padStart(2, "0"));
-  }
-
-  /* ── Gallery ──────────────────────────────────────────── */
-  let galleryIndex = 0;
-
-  function initGallery() {
-    const track = $("#gallery-track");
-    const dots = $("#gallery-dots");
-    if (!track || !dots) return;
-
-    const photos = (CFG.photos || []).filter((p) => p);
-    if (photos.length === 0) {
-      track.innerHTML =
-        '<div class="gallery-item" style="display:flex;align-items:center;justify-content:center;min-height:250px;color:var(--text-muted);font-family:var(--font-elegant);font-size:1.2rem;">Photos coming soon</div>';
-      return;
-    }
-
-    photos.forEach((src, i) => {
-      const item = document.createElement("div");
-      item.className = "gallery-item";
-      const img = document.createElement("img");
-      img.src = src;
-      img.alt = `Photo ${i + 1}`;
-      img.loading = "lazy";
-      img.onerror = function () {
-        this.style.display = "none";
-      };
-      item.appendChild(img);
-      track.appendChild(item);
-
-      const dot = document.createElement("button");
-      dot.className = "gallery-dot" + (i === 0 ? " active" : "");
-      dot.setAttribute("aria-label", `Go to photo ${i + 1}`);
-      dot.addEventListener("click", () => goToSlide(i));
-      dots.appendChild(dot);
-    });
-
-    $(".gallery-prev").addEventListener("click", () => {
-      goToSlide(galleryIndex - 1);
-    });
-    $(".gallery-next").addEventListener("click", () => {
-      goToSlide(galleryIndex + 1);
-    });
-
-    // Touch swipe
-    let startX = 0;
-    track.addEventListener("touchstart", (e) => {
-      startX = e.touches[0].clientX;
-    });
-    track.addEventListener("touchend", (e) => {
-      const diff = startX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) {
-        goToSlide(galleryIndex + (diff > 0 ? 1 : -1));
-      }
-    });
-  }
-
-  function goToSlide(index) {
-    const track = $("#gallery-track");
-    const dots = $$(".gallery-dot");
-    if (!track || dots.length === 0) return;
-
-    const total = dots.length;
-    galleryIndex = ((index % total) + total) % total;
-    track.style.transform = `translateX(-${galleryIndex * 100}%)`;
-    dots.forEach((d, i) => d.classList.toggle("active", i === galleryIndex));
   }
 
   /* ── QR Code ──────────────────────────────────────────── */
